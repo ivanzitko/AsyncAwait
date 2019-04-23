@@ -79,41 +79,41 @@ namespace MsExampleAsyncCall
 
         private static async Task<Toast> ToastBreadAsync(int number)
         {
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 for (int i = 1; i <= number; i++)
                 {
+                    await Task.Delay(1000);
                     Console.WriteLine("Toasts finished:" + i + "/" + number);
-                    Thread.Sleep(1000);
                 }
-            });
+            //});
             Console.WriteLine("Toast is toasted!");
             return new Toast();
         }
 
         private static async Task FryEggsAsync(int number)
         {
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 for (int i = 1; i <= number; i++)
                 {
+                    await Task.Delay(1000);
                     Console.WriteLine("Eggs finished:" + i + "/" + number);
-                    Thread.Sleep(1000);
                 }
-            });
+            //});
             Console.WriteLine("Eggs are fried!");
         }
 
         private static async Task FryBaconAsync(int number)
         {
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
                 for (int i = 1; i <= number; i++)
                 {
+                    await Task.Delay(1000);
                     Console.WriteLine("Bacons finished:" + i + "/" + number);
-                    Thread.Sleep(1000);
                 }
-            });
+            //});
             Console.WriteLine("Bacon is fried!");
         }
 
