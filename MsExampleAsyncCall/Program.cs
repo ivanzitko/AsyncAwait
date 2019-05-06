@@ -29,9 +29,16 @@ namespace MsExampleAsyncCall
                 Task finished = await Task.WhenAny(allTasks);
                 if (finished == eggsTask)
                 {
-                    Console.WriteLine("-------------------------- Eggs are SERVED");
                     allTasks.Remove(eggsTask);
-                    await eggsTask;
+                    try
+                    {
+                        await eggsTask;
+                        Console.WriteLine("-------------------------- Eggs are SERVED");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("-------------------------- Eggs are NOT SERVED. Error:" + ex.Message);
+                    }
                 }
                 else if (finished == baconTask)
                 {
@@ -99,6 +106,7 @@ namespace MsExampleAsyncCall
                 {
                     await Task.Delay(1000);
                     Console.WriteLine("Eggs finished:" + i + "/" + number);
+                    throw new Exception("Jaje se razbilo!");
                 }
             //});
             Console.WriteLine("Eggs are fried!");
