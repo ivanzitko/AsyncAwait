@@ -30,14 +30,14 @@ namespace MsExampleAsyncCall
                 if (finished == eggsTask)
                 {
                     allTasks.Remove(eggsTask);
-                    try
+                    if (eggsTask.Status == TaskStatus.Faulted)
+                    {
+                        Console.WriteLine("-------------------------- Eggs are NOT SERVED. Error:" + eggsTask.Exception.Message);
+                    }
+                    else
                     {
                         await eggsTask;
                         Console.WriteLine("-------------------------- Eggs are SERVED");
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("-------------------------- Eggs are NOT SERVED. Error:" + ex.Message);
                     }
                 }
                 else if (finished == baconTask)
