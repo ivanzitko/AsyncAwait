@@ -15,16 +15,19 @@ namespace MsExampleAsyncCall
             var services = new ServiceCollection();
             ConfigureServices(services);
             var serviceProvider = services.BuildServiceProvider();
-
+            
             var ac = serviceProvider.GetService<AsyncCalls>();
             ac.callMethod();
 
+            Console.WriteLine("CallMethod is called in another thread! It can be seen on console...");
             Console.ReadKey();
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging(configure => configure.AddConsole()).AddTransient<AsyncCalls>();
+            services.AddLogging(configure => configure.AddConsole());
+            services.AddLogging(configure => configure.AddDebug());
+            services.AddTransient<AsyncCalls>();
         }
 
 
