@@ -21,6 +21,7 @@ namespace AsyncAwait
 
         public static async Task<int> Method1()
         {
+            //pera zdera
             int count = 0;
             await Task.Run(() =>
             {
