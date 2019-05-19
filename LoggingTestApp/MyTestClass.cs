@@ -10,7 +10,7 @@ namespace LoggingTestApp
     {
         private readonly ILogger _logger;
 
-        MyTestClass(ILogger<MyTestClass> logger)
+        public MyTestClass(ILogger<MyTestClass> logger)
         {
             _logger = logger;
         }
@@ -19,6 +19,7 @@ namespace LoggingTestApp
         public void SomeMethod()
         {
             _logger.LogDebug("Hello");
+            
         }
     }
 }
