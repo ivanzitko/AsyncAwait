@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
+using Serilog;   // TODO: Ova referenca se dobija instalacijom Serilog.AspNetCore nugeta. Dodavanjem Serilog nugeta se nista ne menja... U nekim tutorijalima se koristi jedan, u neki drugi nuget paket...
+
 
 namespace MsExampleAsyncCall
 {
@@ -15,11 +16,14 @@ namespace MsExampleAsyncCall
         static void Main(string[] args)
         {
             IConfiguration configuration = new ConfigurationBuilder()
-                                        .AddEnvironmentVariables()
-                                        .Build();
+                .AddJsonFile("appsettings.json")  // Ovo je dodato uz instalaciju    Microsoft.Extensions.Configuration.Json     nuget paketa
+                .AddEnvironmentVariables()
+                .Build();
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("consoleapp.log")
+                .ReadFrom.Configuration(configuration) // Dodato uz instalaciju   Serilog.Settings.Configuration   nuget paketa.
+                //.WriteTo.File("consoleapp.log") 
+                //.WriteTo.Console()
                 .CreateLogger();
 
 
@@ -36,19 +40,22 @@ namespace MsExampleAsyncCall
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddLogging(configure => configure.AddConsole());
-            services.AddLogging(configure => configure.AddDebug());
+            services.AddLogging(configure => configure.AddConsole());   // TODO: Ovo je logovanje u konzolu preko MS Logging-a.
+            services.AddLogging(configure => configure.AddDebug());     // TODO: Ovo je logovanje u konzolu preko MS Logging-a.
             services.AddLogging(configure => configure.AddSerilog());   // TODO: Sta se desava ako imamo dva definisana logera u istom programu? Kako to DI resava?
             services.AddTransient<AsyncCalls>();
 
+            /* OVO NICEMU NE SLUZI POSTO NE POSTOJI LOG_LEVEL PROMENLJIVA U Enviroment varijablama
+             * 
             if (configuration["LOG_LEVEL"] == "true")
             {
                 services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Trace);
             }
             else
             {
-                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Error);
+                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information);
             }
+            */
 
         }
 
