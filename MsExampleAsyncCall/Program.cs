@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace MsExampleAsyncCall
 {
@@ -12,8 +14,17 @@ namespace MsExampleAsyncCall
     {
         static void Main(string[] args)
         {
+            IConfiguration configuration = new ConfigurationBuilder()
+                                        .AddEnvironmentVariables()
+                                        .Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("consoleapp.log")
+                .CreateLogger();
+
+
             var services = new ServiceCollection();
-            ConfigureServices(services);
+            ConfigureServices(services, configuration);
             var serviceProvider = services.BuildServiceProvider();
             
             var ac = serviceProvider.GetService<AsyncCalls>();
@@ -23,11 +34,22 @@ namespace MsExampleAsyncCall
             Console.ReadKey();
         }
 
-        private static void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddLogging(configure => configure.AddConsole());
             services.AddLogging(configure => configure.AddDebug());
+            services.AddLogging(configure => configure.AddSerilog());   // TODO: Sta se desava ako imamo dva definisana logera u istom programu? Kako to DI resava?
             services.AddTransient<AsyncCalls>();
+
+            if (configuration["LOG_LEVEL"] == "true")
+            {
+                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Trace);
+            }
+            else
+            {
+                services.Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Error);
+            }
+
         }
 
 
