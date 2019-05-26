@@ -14,6 +14,9 @@ namespace LoggingTestApp
     {
         static void Main(string[] args)
         {
+            var test = new SerilogTestClass();
+            test.LogAction();
+
             Console.WriteLine("Hello World!");
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
@@ -31,9 +34,9 @@ namespace LoggingTestApp
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging(configure => configure.AddConsole())
-                .AddTransient<MyTestClass>();
-
+            services.AddLogging(configure => configure.AddConsole());   
+            services.AddLogging(configure => configure.AddDebug());
+            services.AddTransient<MyTestClass>();
         }
     }
 }

@@ -18,8 +18,10 @@ namespace LoggingTestApp
 
         public void SomeMethod()
         {
-            _logger.LogDebug("Hello");
-            
+            _logger.LogInformation("Hello 1");
+            _logger.LogError("Hello 2");
+            _logger.LogWarning("Hello 3");
+
         }
     }
 }
