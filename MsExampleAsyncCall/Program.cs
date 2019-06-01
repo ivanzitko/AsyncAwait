@@ -26,6 +26,10 @@ namespace MsExampleAsyncCall
                 //.WriteTo.Console()
                 .CreateLogger();
 
+            Log.Warning("ovoj WARRNING log");
+            Log.Information("ovoj iINFO log");
+            Log.Error("ovoj ERROR log");
+
 
             var services = new ServiceCollection();
             ConfigureServices(services, configuration);
